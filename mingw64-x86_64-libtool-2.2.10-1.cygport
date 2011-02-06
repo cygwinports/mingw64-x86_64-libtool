@@ -19,8 +19,5 @@ src_install() {
 	cd ${B}
 	cyginstall
 
-	exeinto /usr/bin
-	newexe libtool ${CROSS_HOST}-libtool
-
-	rm -fr ${D}${CROSS_DATADIR}
+	dotool libtool
 }
