@@ -1,0 +1,31 @@
+NAME="mingw64-x86_64-libtool"
+VERSION=2.4.2
+RELEASE=1
+CATEGORY="Devel"
+SUMMARY="libtool for Win64 toolchain"
+HOMEPAGE="http://www.gnu.org/software/libtool/"
+case $((${PV[3]%[a-z]} % 2)) in
+1)	SRC_URI="http://pogma.com/libtool/libtool-${VERSION}.tar.xz" ;;
+0)	SRC_URI="mirror://gnu/libtool/libtool-${VERSION}.tar.xz" ;;
+esac
+SRC_DIR="libtool-${VERSION}"
+CROSS_HOST="x86_64-w64-mingw32"
+inherit cross
+
+src_compile() {
+	cd ${B}
+	unset GCJ GOC
+	cygconf
+	cygmake -j1
+}
+
+src_install() {
+	cd ${B}
+	cyginstall
+	dotool libtool
+
+	rm -f ${D}${CROSS_BINDIR}/libtoolize
+	rm -fr ${D}${CROSS_DATADIR}/
+}
+
+KEEP_LA_FILES="none"
