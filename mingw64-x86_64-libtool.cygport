@@ -1,6 +1,9 @@
+CROSS_HOST="x86_64-w64-mingw32"
+inherit cross
+
 NAME="mingw64-x86_64-libtool"
 VERSION=2.4.2
-RELEASE=1
+RELEASE=4
 CATEGORY="Devel"
 SUMMARY="libtool for Win64 toolchain"
 HOMEPAGE="http://www.gnu.org/software/libtool/"
@@ -9,8 +12,9 @@ case $((${PV[3]%[a-z]} % 2)) in
 0)	SRC_URI="mirror://gnu/libtool/libtool-${VERSION}.tar.xz" ;;
 esac
 SRC_DIR="libtool-${VERSION}"
-CROSS_HOST="x86_64-w64-mingw32"
-inherit cross
+PATCH_URI="2.4-pass-ldflags.patch"
+
+DIFF_EXCLUDES="libtool.1 ltmain.sh"
 
 src_compile() {
 	cd ${B}
@@ -28,4 +32,4 @@ src_install() {
 	rm -fr ${D}${CROSS_DATADIR}/
 }
 
-KEEP_LA_FILES="none"
+KEEP_LA_FILES="all"
